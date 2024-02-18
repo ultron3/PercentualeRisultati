@@ -41,13 +41,15 @@ Module Main
                     If fields.Length >= 4 Then
                         Dim maxLoad As Double() = {0, 0, 0} ' Inizializza un array per i massimi carichi
                         For i As Integer = 0 To Math.Min(2, fields.Length - 2)
-                            Dim value As Double = 0
-                            If Not String.IsNullOrWhiteSpace(fields(i + 1)) AndAlso Double.TryParse(fields(i + 1), value) Then
-                                maxLoad(i) = value
-                            Else
-                                ' Gestisci l'errore nel caso in cui non sia possibile convertire il valore in un numero
-                                Console.WriteLine($"Errore durante l'analisi del campo {i + 1} nella riga: {String.Join(",", fields)}")
-                                Exit While ' Esci dal ciclo For
+                            If Not String.IsNullOrWhiteSpace(fields(i + 1)) Then
+                                Dim value As Double = 0
+                                If Double.TryParse(fields(i + 1), value) Then
+                                    maxLoad(i) = value
+                                Else
+                                    ' Gestisci il caso in cui il campo non sia un numero
+                                    Console.WriteLine($"Il valore '{fields(i + 1)}' nel campo {i + 1} non è un numero nella riga: {String.Join(",", fields)}")
+                                    Exit While ' Esci dal ciclo For
+                                End If
                             End If
                         Next
                         maxLoads.Add(maxLoad)
@@ -73,4 +75,3 @@ Module Main
         End Try
     End Sub
 End Module
-
